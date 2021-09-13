@@ -27,7 +27,7 @@ module ApiStruct
       define_method http_method do |*args, **options|
         begin
           options[:params] = default_params.merge(options[:params] || {})
-          wrap client.send(http_method, build_url(args, options), options)
+          wrap client.timeout(10).send(http_method, build_url(args, options), options)
         rescue HTTP::ConnectionError => e
           failure(body: e.message, status: :not_connected)
         end
